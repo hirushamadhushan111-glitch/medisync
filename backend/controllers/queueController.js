@@ -407,7 +407,7 @@ const getMyQueuePosition = async (req, res) => {
 // Clinic list for the waiting-room TV display's dropdown.
 const getPublicClinics = async (req, res) => {
   try {
-    const clinics = await Clinic.find({ isActive: true }).select('clinicName departmentType').sort({ clinicName: 1 });
+    const clinics = await Clinic.find({ isActive: true }).select('clinicName departmentType isActive').sort({ clinicName: 1 });
     return res.json({ clinics });
   } catch (error) {
     return res.status(500).json({ message: error.message });
