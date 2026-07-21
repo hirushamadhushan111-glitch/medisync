@@ -94,7 +94,7 @@ const Navbar = () => {
   const pill = rolePills[role] || { label: role || 'User', classes: 'bg-gray-100 text-gray-700' };
 
   return (
-    <nav className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-100 dark:border-gray-700 fixed top-0 left-56 right-0 h-16 z-40 flex items-center px-5 gap-3 transition-all duration-300 sidebar-nav">
+    <nav className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-100 dark:border-gray-700 fixed top-0 left-56 right-0 h-16 z-40 flex items-center px-3 sm:px-5 gap-2 sm:gap-3 transition-all duration-300 sidebar-nav">
       {/* LEFT: hamburger + search */}
       <div className="flex items-center gap-2 flex-1 min-w-0">
         <button
@@ -108,7 +108,7 @@ const Navbar = () => {
 
         {/* Patient search — only for admin/staff/doctor */}
         {role !== 'patient' && (
-          <div ref={searchRef} className="relative">
+          <div ref={searchRef} className="relative hidden sm:block">
             <div className="relative">
               <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
               <input
@@ -117,7 +117,7 @@ const Navbar = () => {
                 value={search}
                 onChange={(e) => handleSearch(e.target.value)}
                 onFocus={() => results.length > 0 && setShowResults(true)}
-                className="w-64 h-9 border border-gray-200 dark:border-gray-600 rounded-xl pl-8 pr-8 text-sm bg-blue-50 dark:bg-gray-700 dark:text-gray-100 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none placeholder:text-gray-400 transition-colors"
+                className="w-40 lg:w-64 h-9 border border-gray-200 dark:border-gray-600 rounded-xl pl-8 pr-8 text-sm bg-blue-50 dark:bg-gray-700 dark:text-gray-100 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none placeholder:text-gray-400 transition-colors"
               />
               {search && (
                 <button type="button" onClick={clearSearch} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
@@ -128,7 +128,7 @@ const Navbar = () => {
 
             {/* Search results dropdown */}
             {showResults && (
-              <div className="absolute top-full left-0 mt-1.5 w-80 bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 z-50 overflow-hidden">
+              <div className="absolute top-full left-0 mt-1.5 w-72 sm:w-80 max-w-[calc(100vw-4rem)] bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 z-50 overflow-hidden">
                 {searching ? (
                   <div className="px-4 py-3 text-sm text-gray-400 text-center">Searching…</div>
                 ) : results.length === 0 ? (
@@ -178,12 +178,12 @@ const Navbar = () => {
             className="flex items-center gap-1.5 border border-gray-200 dark:border-gray-600 rounded-xl px-3 py-1.5 text-sm text-gray-600 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-blue-50 dark:hover:bg-gray-600 transition-colors"
           >
             <MapPin size={14} className="text-blue-500 dark:text-blue-400 flex-shrink-0" />
-            <span className="max-w-[140px] truncate">{activeClinic ? clinicDisplayName(activeClinic, t) : t('nav.selectClinic')}</span>
+            <span className="max-w-[80px] sm:max-w-[140px] truncate">{activeClinic ? clinicDisplayName(activeClinic, t) : t('nav.selectClinic')}</span>
             <ChevronDown size={14} className={`text-gray-400 transition-transform duration-200 ${showClinicDD ? 'rotate-180' : ''}`} />
           </button>
 
           {showClinicDD && (
-            <div className="absolute top-full left-1/2 -translate-x-1/2 mt-1.5 w-56 bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 z-50 overflow-hidden py-1">
+            <div className="absolute top-full right-0 sm:right-auto sm:left-1/2 sm:-translate-x-1/2 mt-1.5 w-56 bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 z-50 overflow-hidden py-1">
               <div className="px-3 py-2 border-b border-gray-100 dark:border-gray-700">
                 <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{t('nav.activeClinics')}</span>
               </div>
@@ -211,8 +211,8 @@ const Navbar = () => {
       )}
 
       {/* RIGHT */}
-      <div className="flex items-center gap-2 flex-shrink-0">
-        <span className={`rounded-full px-2.5 py-0.5 text-xs font-semibold whitespace-nowrap ${
+      <div className="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
+        <span className={`rounded-full px-2.5 py-0.5 text-xs font-semibold whitespace-nowrap hidden sm:inline-block ${
           isDark ? 'bg-amber-400/15 text-amber-300' : pill.classes
         }`}>
           {pill.label}
@@ -250,10 +250,10 @@ const Navbar = () => {
         <button
           type="button"
           onClick={handleLogout}
-          className="flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-600 text-white rounded-xl px-3 py-1.5 text-sm font-semibold transition-colors"
+          className="flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-600 text-white rounded-xl px-2.5 sm:px-3 py-1.5 text-sm font-semibold transition-colors"
         >
           <LogOut size={14} />
-          {t('nav.logout')}
+          <span className="hidden sm:inline">{t('nav.logout')}</span>
         </button>
       </div>
     </nav>

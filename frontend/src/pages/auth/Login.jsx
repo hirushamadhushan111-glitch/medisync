@@ -115,7 +115,7 @@ const Login = () => {
       </div>
 
       {/* Right panel — dark sign-in area */}
-      <div className="flex-1 flex items-center justify-center bg-slate-950 p-8 relative">
+      <div className="flex-1 flex justify-center bg-slate-950 p-4 sm:p-8 relative">
         {/* Language toggle */}
         <button
           type="button"
@@ -125,17 +125,28 @@ const Login = () => {
           {i18n.language === 'en' ? 'LK සිංහල' : 'EN English'}
         </button>
 
-        <div className="w-full max-w-md">
-          {/* Mobile logo */}
-          <div className="flex lg:hidden items-center justify-center gap-2.5 mb-8">
-            <div className="w-11 h-11 rounded-xl bg-white shadow-lg flex items-center justify-center">
-              <Logo size={28} />
+        {/* my-auto = safe vertical centering (aligns top when content overflows) */}
+        <div className="w-full max-w-md my-auto py-12 lg:py-0">
+          {/* Mobile hero — clinic photo + branding (desktop shows the left panel instead) */}
+          <div className="lg:hidden relative rounded-3xl overflow-hidden mb-6 shadow-2xl shadow-black/40 border border-slate-800">
+            <img src={heroImg} alt="" className="absolute inset-0 w-full h-full object-cover" />
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-900/60 to-slate-950/30" />
+            <div className="relative p-5">
+              <div className="flex items-center gap-2.5 mb-4">
+                <div className="w-10 h-10 rounded-xl bg-white/95 shadow-lg flex items-center justify-center">
+                  <Logo size={26} />
+                </div>
+                <span className="text-xl font-bold text-white tracking-wide drop-shadow">MediSync</span>
+              </div>
+              <div className="inline-block bg-amber-400 text-blue-900 text-[10px] font-bold px-2.5 py-0.5 rounded-full mb-2 uppercase tracking-widest shadow">
+                Smart OPD System
+              </div>
+              <p className="text-white text-lg font-bold leading-snug drop-shadow">{t('login.tagline')}</p>
             </div>
-            <span className="text-2xl font-bold text-white">MediSync</span>
           </div>
 
           {/* Login card — email + password (with show/hide toggle) */}
-          <div className="bg-slate-900 rounded-3xl shadow-2xl shadow-black/40 border border-slate-800 p-8 md:p-10">
+          <div className="bg-slate-900 rounded-3xl shadow-2xl shadow-black/40 border border-slate-800 p-6 sm:p-8 md:p-10">
             <div className="mb-8">
               <h2 className="text-2xl font-bold text-white">{t('login.welcome')}</h2>
               <p className="text-slate-400 text-sm mt-1">{t('login.subtitle')}</p>

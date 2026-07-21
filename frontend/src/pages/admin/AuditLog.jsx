@@ -161,6 +161,7 @@ const AuditLog = () => {
               <p className="text-sm">{t('auditLog.noEvents')}</p>
             </div>
           ) : (
+            <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-gray-100 bg-gray-50">
@@ -206,6 +207,7 @@ const AuditLog = () => {
                 ))}
               </tbody>
             </table>
+            </div>
           )}
         </div>
 

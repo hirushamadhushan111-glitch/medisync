@@ -45,6 +45,18 @@ body {
 html.sidebar-collapsed .pl-56      { padding-left: 4rem !important; }
 html.sidebar-collapsed .left-56    { left: 4rem !important; }
 html.sidebar-collapsed .sidebar-nav { left: 4rem !important; }
+
+/* ── Mobile (<768px): sidebar becomes an overlay drawer, so pages and
+      the navbar take the full width. The html-prefixed selectors are
+      needed to out-rank the sidebar-collapsed !important rules above. ── */
+@media (max-width: 767px) {
+  html .pl-56,
+  html.sidebar-collapsed .pl-56       { padding-left: 0 !important; }
+  html .left-56,
+  html.sidebar-collapsed .left-56     { left: 0 !important; }
+  html .sidebar-nav,
+  html.sidebar-collapsed .sidebar-nav { left: 0 !important; }
+}
 .app-loader {
   min-height: 100vh;
   display: grid;

@@ -96,7 +96,7 @@ const sidebarConfig = {
 };
 
 // One menu link with icon + active highlight.
-const NavItem = ({ icon: Icon, label, to, onClick, collapsed }) => {
+const NavItem = ({ icon: Icon, label, to, onClick, onNavigate, collapsed }) => {
   const base = `flex items-center gap-3 rounded-xl text-sm font-medium transition-all duration-150 w-full ${collapsed ? 'px-2 py-2.5 justify-center' : 'px-3 py-2.5'}`;
 
   if (onClick) {
@@ -110,7 +110,7 @@ const NavItem = ({ icon: Icon, label, to, onClick, collapsed }) => {
   }
 
   return (
-    <NavLink to={to} title={collapsed ? label : undefined}
+    <NavLink to={to} title={collapsed ? label : undefined} onClick={onNavigate}
       className={({ isActive }) =>
         `${base} ${isActive
           ? `bg-white/15 text-white ${collapsed ? '' : 'border-l-[3px] border-amber-400 pl-[9px]'}`
@@ -127,10 +127,13 @@ const NavItem = ({ icon: Icon, label, to, onClick, collapsed }) => {
 // Component (see header).
 const Sidebar = () => {
   const { role, logout, user } = useAuth();
-  const { collapsed } = useSidebar();
+  const { collapsed, isMobile, mobileOpen, closeMobileSidebar } = useSidebar();
   const { t } = useTranslation();
   const navigate = useNavigate();
   const links = sidebarConfig[role] || [];
+
+  // On mobile the drawer always shows full width with labels.
+  const mini = collapsed && !isMobile;
 
   // Log out and go to the login page.
   const handleLogout = () => { logout(); navigate('/login', { replace: true }); };
@@ -145,20 +148,26 @@ const Sidebar = () => {
   const initial = user?.name?.[0]?.toUpperCase() || '?';
 
   return (
-    <aside className={`bg-blue-900 fixed left-0 top-0 h-screen flex flex-col z-50 transition-all duration-300 ${collapsed ? 'w-16' : 'w-56'}`}>
+    <>
+      {/* Mobile: dark backdrop behind the open drawer */}
+      {isMobile && mobileOpen && (
+        <div className="fixed inset-0 bg-black/50 z-40" onClick={closeMobileSidebar} aria-hidden="true" />
+      )}
+
+      <aside className={`bg-blue-900 fixed left-0 top-0 h-screen flex flex-col z-50 transition-all duration-300 ${mini ? 'w-16' : 'w-56'} ${isMobile && !mobileOpen ? '-translate-x-full' : 'translate-x-0'}`}>
       {/* Brand */}
       <div className="h-16 flex items-center px-4 border-b border-white/10 flex-shrink-0 overflow-hidden">
         <div className="w-9 h-9 rounded-lg bg-white/95 shadow flex items-center justify-center flex-shrink-0">
           <Logo size={24} />
         </div>
-        {!collapsed && <span className="text-white font-bold text-lg tracking-tight ml-3 whitespace-nowrap">MediSync</span>}
+        {!mini && <span className="text-white font-bold text-lg tracking-tight ml-3 whitespace-nowrap">MediSync</span>}
       </div>
 
       {/* Navigation */}
       <nav className="flex-1 overflow-y-auto py-3 px-2 space-y-4 scrollbar-thin">
         {Object.entries(sections).map(([sectionName, sectionLinks]) => (
           <div key={sectionName}>
-            {!collapsed && (
+            {!mini && (
               <div className="text-blue-400 text-[10px] font-bold uppercase tracking-widest px-3 mb-1.5">
                 {sectionName}
               </div>
@@ -166,7 +175,7 @@ const Sidebar = () => {
             <div className="space-y-0.5">
               {sectionLinks.map(({ tKey, path, icon }) => {
                 const Icon = ICONS[icon] || LayoutDashboard;
-                return <NavItem key={path} to={path} icon={Icon} label={t(`sidebar.${tKey}`)} collapsed={collapsed} />;
+                return <NavItem key={path} to={path} icon={Icon} label={t(`sidebar.${tKey}`)} collapsed={mini} onNavigate={closeMobileSidebar} />;
               })}
             </div>
           </div>
@@ -179,17 +188,17 @@ const Sidebar = () => {
           title="Logout"
           className="flex items-center gap-3 w-full px-3 py-2.5 rounded-xl text-sm font-medium text-blue-300 hover:bg-white/10 hover:text-white transition-all mb-2">
           <LogOut size={17} className="flex-shrink-0" />
-          {!collapsed && <span>{t('sidebar.logout')}</span>}
+          {!mini && <span>{t('sidebar.logout')}</span>}
         </button>
 
-        <div className={`flex items-center gap-2.5 px-2 py-1.5 ${collapsed ? 'justify-center' : ''}`}>
+        <div className={`flex items-center gap-2.5 px-2 py-1.5 ${mini ? 'justify-center' : ''}`}>
           <div className="w-8 h-8 rounded-full overflow-hidden bg-white/20 text-white text-xs font-semibold flex items-center justify-center flex-shrink-0">
             {user?.avatar
               ? <img src={resolveAvatar(user.avatar)} alt={user?.name} className="w-8 h-8 object-cover" />
               : initial
             }
           </div>
-          {!collapsed && (
+          {!mini && (
             <div className="overflow-hidden">
               <div className="text-white text-xs font-semibold truncate">{user?.name || 'User'}</div>
               <div className="text-blue-400 text-[10px] capitalize truncate">{role}</div>
@@ -197,7 +206,8 @@ const Sidebar = () => {
           )}
         </div>
       </div>
-    </aside>
+      </aside>
+    </>
   );
 };
 
