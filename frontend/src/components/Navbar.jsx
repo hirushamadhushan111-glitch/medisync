@@ -175,7 +175,7 @@ const Navbar = () => {
           <button
             type="button"
             onClick={() => setShowClinicDD((v) => !v)}
-            className="flex items-center gap-1.5 border border-gray-200 dark:border-gray-600 rounded-xl px-3 py-1.5 text-sm text-gray-600 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-blue-50 dark:hover:bg-gray-600 transition-colors"
+            className="flex items-center gap-1.5 border border-gray-200 dark:border-gray-600 rounded-xl px-2 sm:px-3 py-1.5 text-sm text-gray-600 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-blue-50 dark:hover:bg-gray-600 transition-colors"
           >
             <MapPin size={14} className="text-blue-500 dark:text-blue-400 flex-shrink-0" />
             <span className="max-w-[80px] sm:max-w-[140px] truncate">{activeClinic ? clinicDisplayName(activeClinic, t) : t('nav.selectClinic')}</span>
@@ -222,7 +222,7 @@ const Navbar = () => {
           type="button"
           onClick={toggleTheme}
           title={isDark ? t('nav.lightMode') : t('nav.darkMode')}
-          className={`w-8 h-8 flex items-center justify-center rounded-xl transition-all duration-200 ${
+          className={`w-8 h-8 hidden sm:flex items-center justify-center rounded-xl transition-all duration-200 ${
             isDark ? 'bg-amber-400/20 text-amber-400 hover:bg-amber-400/30' : 'bg-blue-50 text-blue-600 hover:bg-blue-100'
           }`}
         >

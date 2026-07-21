@@ -304,14 +304,14 @@ const ClinicPatients = () => {
                   ))}
                 </div>
 
-                <div className="pb-3 flex items-center gap-2">
+                <div className="pb-3 flex items-center gap-2 flex-wrap w-full sm:w-auto">
                   {tab === 'patients' ? (
                     <>
-                      <div className="relative">
+                      <div className="relative flex-1 sm:flex-none min-w-[150px]">
                         <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
                         <input value={search} onChange={(e) => setSearch(e.target.value)}
                           placeholder={t('clinicPatients.searchPlaceholder')}
-                          className="h-9 w-64 border border-gray-200 rounded-xl pl-8 pr-3 text-xs bg-blue-50 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none" />
+                          className="h-9 w-full sm:w-64 border border-gray-200 rounded-xl pl-8 pr-3 text-xs bg-blue-50 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none" />
                       </div>
                       <button type="button" onClick={() => { setShowAdd((v) => !v); setAddMsg({ text: '', error: false }); }}
                         className="flex items-center gap-1.5 h-9 px-3 bg-amber-400 hover:bg-amber-500 text-blue-900 text-xs font-bold rounded-xl transition-colors flex-shrink-0">
@@ -352,10 +352,10 @@ const ClinicPatients = () => {
                           <th className="px-5 py-3 font-semibold">{t('clinicPatients.patient')}</th>
                           <th className="px-4 py-3 font-semibold">{t('clinicPatients.nic')}</th>
                           <th className="px-4 py-3 font-semibold">{t('clinicPatients.phone')}</th>
-                          <th className="px-4 py-3 font-semibold">{t('clinicPatients.genderAge')}</th>
-                          <th className="px-4 py-3 font-semibold">{t('clinicPatients.blood')}</th>
-                          <th className="px-4 py-3 font-semibold">{t('clinicPatients.clinics')}</th>
-                          <th className="px-4 py-3 font-semibold">{t('clinicPatients.registeredOn')}</th>
+                          <th className="px-4 py-3 font-semibold hidden sm:table-cell">{t('clinicPatients.genderAge')}</th>
+                          <th className="px-4 py-3 font-semibold hidden md:table-cell">{t('clinicPatients.blood')}</th>
+                          <th className="px-4 py-3 font-semibold hidden md:table-cell">{t('clinicPatients.clinics')}</th>
+                          <th className="px-4 py-3 font-semibold hidden lg:table-cell">{t('clinicPatients.registeredOn')}</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -373,16 +373,16 @@ const ClinicPatients = () => {
                             <td className="px-4 py-3 text-gray-600">
                               <span className="inline-flex items-center gap-1.5"><Phone size={13} className="text-gray-300" />{patient.userId?.phone || '—'}</span>
                             </td>
-                            <td className="px-4 py-3 text-gray-600 capitalize">
+                            <td className="px-4 py-3 text-gray-600 capitalize hidden sm:table-cell">
                               {patient.gender !== 'not-specified' ? t(`profile.${patient.gender}`, patient.gender) : '—'}
                               {patient.age ? ` · ${patient.age}` : ''}
                             </td>
-                            <td className="px-4 py-3">
+                            <td className="px-4 py-3 hidden md:table-cell">
                               {patient.bloodGroup
                                 ? <span className="text-[11px] font-bold bg-red-50 text-red-600 rounded-full px-2 py-0.5">{patient.bloodGroup}</span>
                                 : <span className="text-gray-300">—</span>}
                             </td>
-                            <td className="px-4 py-3">
+                            <td className="px-4 py-3 hidden md:table-cell">
                               <div className="flex flex-wrap gap-1 max-w-[180px]">
                                 {(patient.registeredClinics || []).map((clinic) => {
                                   const cid = clinic?._id || clinic;
@@ -396,7 +396,7 @@ const ClinicPatients = () => {
                                 })}
                               </div>
                             </td>
-                            <td className="px-4 py-3 text-gray-500 text-xs">
+                            <td className="px-4 py-3 text-gray-500 text-xs hidden lg:table-cell">
                               {new Date(patient.createdAt).toLocaleDateString(locale, { year: 'numeric', month: 'short', day: 'numeric' })}
                             </td>
                           </tr>
@@ -424,10 +424,10 @@ const ClinicPatients = () => {
                           <tr className="text-left text-[11px] text-gray-400 uppercase tracking-wide border-b border-gray-100">
                             <th className="px-5 py-3 font-semibold">{t('clinicPatients.queueNo')}</th>
                             <th className="px-4 py-3 font-semibold">{t('clinicPatients.patient')}</th>
-                            <th className="px-4 py-3 font-semibold">{t('clinicPatients.nic')}</th>
-                            <th className="px-4 py-3 font-semibold">{t('clinicPatients.doctor')}</th>
+                            <th className="px-4 py-3 font-semibold hidden md:table-cell">{t('clinicPatients.nic')}</th>
+                            <th className="px-4 py-3 font-semibold hidden md:table-cell">{t('clinicPatients.doctor')}</th>
                             <th className="px-4 py-3 font-semibold">{t('clinicPatients.time')}</th>
-                            <th className="px-4 py-3 font-semibold">{t('clinicPatients.type')}</th>
+                            <th className="px-4 py-3 font-semibold hidden sm:table-cell">{t('clinicPatients.type')}</th>
                             <th className="px-4 py-3 font-semibold">{t('clinicPatients.status')}</th>
                           </tr>
                         </thead>
@@ -445,12 +445,12 @@ const ClinicPatients = () => {
                                   <span className="font-semibold text-gray-900">{appt.patientId?.userId?.name}</span>
                                 </div>
                               </td>
-                              <td className="px-4 py-3 text-gray-600">{appt.patientId?.NIC}</td>
-                              <td className="px-4 py-3 text-gray-600">{withDrPrefix(appt.doctorId?.userId?.name)}</td>
+                              <td className="px-4 py-3 text-gray-600 hidden md:table-cell">{appt.patientId?.NIC}</td>
+                              <td className="px-4 py-3 text-gray-600 hidden md:table-cell">{withDrPrefix(appt.doctorId?.userId?.name)}</td>
                               <td className="px-4 py-3 text-gray-600">
                                 <span className="inline-flex items-center gap-1.5"><Clock size={13} className="text-gray-300" />{appt.appointmentTime}</span>
                               </td>
-                              <td className="px-4 py-3">
+                              <td className="px-4 py-3 hidden sm:table-cell">
                                 <span className={`text-[11px] font-bold rounded-full px-2 py-0.5 ${appt.bookingType === 'walk-in' ? 'bg-amber-100 text-amber-700' : 'bg-blue-100 text-blue-700'}`}>
                                   {appt.bookingType === 'walk-in' ? t('apptMgmt.walkIn') : t('apptMgmt.online')}
                                 </span>
@@ -524,10 +524,10 @@ const ClinicPatients = () => {
                     <thead>
                       <tr className="text-left text-[11px] text-gray-400 uppercase tracking-wide border-b border-gray-100">
                         <th className="px-5 py-3 font-semibold">{t('clinicPatients.doctor')}</th>
-                        <th className="px-4 py-3 font-semibold">{t('clinicPatients.department')}</th>
-                        <th className="px-4 py-3 font-semibold">{t('clinicPatients.specialization')}</th>
+                        <th className="px-4 py-3 font-semibold hidden md:table-cell">{t('clinicPatients.department')}</th>
+                        <th className="px-4 py-3 font-semibold hidden sm:table-cell">{t('clinicPatients.specialization')}</th>
                         <th className="px-4 py-3 font-semibold">{t('clinicPatients.availability')}</th>
-                        <th className="px-4 py-3 font-semibold">{t('clinicPatients.clinics')}</th>
+                        <th className="px-4 py-3 font-semibold hidden lg:table-cell">{t('clinicPatients.clinics')}</th>
                         {isAdmin && <th className="px-4 py-3 font-semibold" />}
                       </tr>
                     </thead>
@@ -540,14 +540,14 @@ const ClinicPatients = () => {
                               <div className="font-semibold text-gray-900">{withDrPrefix(doctor.userId?.name)}</div>
                             </div>
                           </td>
-                          <td className="px-4 py-3 text-gray-600">{departmentLabel(doctor.department, t)}</td>
-                          <td className="px-4 py-3 text-gray-600">{specializationLabel(doctor.specialization, t)}</td>
+                          <td className="px-4 py-3 text-gray-600 hidden md:table-cell">{departmentLabel(doctor.department, t)}</td>
+                          <td className="px-4 py-3 text-gray-600 hidden sm:table-cell">{specializationLabel(doctor.specialization, t)}</td>
                           <td className="px-4 py-3">
                             <span className={`text-[11px] font-bold rounded-full px-2 py-0.5 ${doctor.isAvailable ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
                               {doctor.isAvailable ? t('clinicPatients.available') : t('clinicPatients.unavailable')}
                             </span>
                           </td>
-                          <td className="px-4 py-3">
+                          <td className="px-4 py-3 hidden lg:table-cell">
                             <div className="flex flex-wrap gap-1 max-w-[180px]">
                               {doctorClinicsOf(doctor._id.toString()).map((clinic) => (
                                 <span key={clinic._id}
